@@ -1,0 +1,10 @@
+---
+# defaults file for ansible-newrelic_java_agent-role
+
+java_agent_download_url: http://apt.newrelic.com/newrelic/java-agent/newrelic-agent
+java_agent_version: 3.12.0
+java_agent_tomcat_version: 7
+java_agent_user: root
+java_agent_app_name: My Application
+java_agent_downloads_path: /tmp
+java_agent_env_path: /etc/default/tomcat7

@@ -15,4 +15,9 @@ java_agent_env_path: /etc/default/tomcat7
 
 The `newrelic_license_key` variable must also be defined.
 
+License
+---
+
+The project is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
 ---

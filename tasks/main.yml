@@ -4,57 +4,57 @@
 
 - name: Get newrelic java agent
   get_url:
-    url={{ java_agent_download_url }}/{{ java_agent_version }}/newrelic-java-{{ java_agent_version }}.zip
-    dest={{ java_agent_downloads_path }}/newrelic-java-{{ java_agent_version }}.zip
-    mode=0766
+    url: "{{ java_agent_download_url }}/{{ java_agent_version }}/newrelic-java-{{ java_agent_version }}.zip"
+    dest: "{{ java_agent_downloads_path }}/newrelic-java-{{ java_agent_version }}.zip"
+    mode: "0766"
   register: new_newrelic_download
   tags:
     - new-relic
 
 - name: Remove the old newrelic directory when a new file has been downloaded
   file:
-    path={{ java_agent_downloads_path }}/newrelic
-    state=absent
+    path: "{{ java_agent_downloads_path }}/newrelic"
+    state: absent
   when: new_newrelic_download.changed == True
   tags:
     - new-relic
 
 - name: Unzip the newrelic java agent download
   unarchive:
-    src={{ java_agent_downloads_path }}/newrelic-java-{{ java_agent_version }}.zip
-    dest={{ java_agent_downloads_path }}
-    copy=false
-    mode=0766
+    src: "{{ java_agent_downloads_path }}/newrelic-java-{{ java_agent_version }}.zip"
+    dest: "{{ java_agent_downloads_path }}"
+    copy: false
+    mode: "0766"
   when: new_newrelic_download.changed == True
   tags:
     - new-relic
 
 - name: Set up the Newrelic config file
   template:
-    src=newrelic.yml.j2
-    dest={{ java_agent_downloads_path }}/newrelic/newrelic.yml
-    owner={{ java_agent_user }}
-    group={{ java_agent_user }}
-    mode=0775
+    src: newrelic.yml.j2
+    dest: "{{ java_agent_downloads_path }}/newrelic/newrelic.yml"
+    owner: "{{ java_agent_user }}"
+    group: "{{ java_agent_user }}"
+    mode: "0775"
   notify: restart tomcat
   tags:
     - new-relic
 
 - name: Make sure the newrelic dir is writeable
   file:
-    path={{ java_agent_downloads_path }}/newrelic
-    state=directory
-    owner={{ java_agent_user }}
-    group={{ java_agent_user }}
-    mode=0775
-    recurse=true
+    path: "{{ java_agent_downloads_path }}/newrelic"
+    state: directory
+    owner: "{{ java_agent_user }}"
+    group: "{{ java_agent_user }}"
+    mode: "0775"
+    recurse: true
   tags:
     - new-relic
 
 - name: Add java agent to Tomcat Java opts
   lineinfile:
-    dest="{{ java_agent_env_path }}"
-    line=JAVA_OPTS='"${JAVA_OPTS} -javaagent:{{ java_agent_downloads_path }}/newrelic/newrelic.jar"'
+    dest: "{{ java_agent_env_path }}"
+    line: JAVA_OPTS='"${JAVA_OPTS} -javaagent:{{ java_agent_downloads_path }}/newrelic/newrelic.jar"'
   notify: restart tomcat
   tags:
     - new-relic

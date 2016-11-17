@@ -4,6 +4,6 @@
 
 - name: restart tomcat
   service:
-    name=tomcat7
-    state=restarted
+    name: tomcat7
+    state: restarted
   when: java_agent_tomcat_version == 7

@@ -54,7 +54,7 @@
 - name: Add java agent to Tomcat Java opts
   lineinfile:
     dest: "{{ java_agent_env_path }}"
-    line: JAVA_OPTS='"${JAVA_OPTS} -javaagent:{{ java_agent_downloads_path }}/newrelic/newrelic.jar"'
+    line: 'JAVA_OPTS="${JAVA_OPTS} -javaagent:{{ java_agent_downloads_path }}/newrelic/newrelic.jar"'
   notify: restart tomcat
   tags:
     - new-relic
